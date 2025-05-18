@@ -24,7 +24,7 @@ if uploaded_file is not None:
         prediction = model.predict(img_array)
         # Тук трябва да обработиш output-a на модела според твоите класове
         # Например, ако имаш класове в списък:
-        classes = ["папагал", "синигер", "гарга", "лаврак"]  # смени с твоите класове
+        classes = ["parrot", "white stork"]  # смени с твоите класове
         predicted_class = classes[np.argmax(prediction)]
 
         st.write(f"Моделът разпознава: **{predicted_class}**")
