@@ -1,209 +1,141 @@
 <!DOCTYPE html>
 <html lang="bg">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Encyclopedia ChatBot</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f0f2f5;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            background-color: #1f2937;
-            color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        header img {
-            height: 50px;
-            margin-right: 15px;
-        }
-
-        header h1 {
-            font-size: 22px;
-            margin: 0;
-        }
-
-        #imageContainer {
-            text-align: center;
-            padding: 30px;
-            background: #000;
-        }
-
-        #imageContainer img {
-            max-width: 90%;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-        }
-
-        .chat-container {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 600px;
-            background: rgba(255, 255, 255, 0.96);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.25);
-            z-index: 999;
-            overflow: hidden;
-            animation: fadeInUp 0.4s ease;
-        }
-
-        .chat-header {
-            background: #333;
-            color: white;
-            padding: 12px 20px;
-            font-size: 18px;
-        }
-
-        .chat-body {
-            padding: 15px 20px;
-            min-height: 50px;
-            transition: all 0.3s ease;
-        }
-
-        .chat-footer {
-            display: flex;
-            border-top: 1px solid #ddd;
-        }
-
-        .chat-footer input {
-            flex: 1;
-            padding: 12px;
-            font-size: 16px;
-            border: none;
-            border-bottom-left-radius: 15px;
-        }
-
-        .chat-footer button {
-            padding: 12px 20px;
-            background: #333;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-bottom-right-radius: 15px;
-        }
-
-        .message {
-            opacity: 0;
-            transform: translateY(10px);
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .chat-container {
-                border-radius: 0;
-                bottom: 0;
-            }
-
-            .chat-footer input {
-                border-bottom-left-radius: 0;
-            }
-
-            .chat-footer button {
-                border-bottom-right-radius: 0;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Encyclopedia ChatBot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background-color: #1f2937;
+      color: white;
+    }
+    header img {
+      height: 50px;
+      margin-right: 15px;
+    }
+    #imageContainer {
+      text-align: center;
+      padding: 30px;
+      background: #000;
+    }
+    #imageContainer img {
+      max-width: 90%;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    }
+    .chat-container {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.25);
+    }
+    .chat-header {
+      background: #333;
+      color: white;
+      padding: 12px 20px;
+      font-size: 18px;
+    }
+    .chat-body {
+      padding: 15px 20px;
+      min-height: 50px;
+    }
+    .chat-footer {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    .chat-footer input {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-bottom-left-radius: 15px;
+    }
+    .chat-footer button {
+      padding: 12px 20px;
+      background: #333;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      border-bottom-right-radius: 15px;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- 🔝 HEADER с лого и надпис -->
-    <header>
-        <img src="/images/logo.png" alt="Logo">
-    </header>
+  <header>
+    <img src="images/logo.png" alt="Logo" />
+    <h1>Car Encyclopedia</h1>
+  </header>
 
-    <!-- 🖼 Снимка на автомобил -->
-    <div id="imageContainer"></div>
+  <div id="imageContainer"></div>
 
-    <!-- 💬 Чат -->
-    <div class="chat-container">
-        <div class="chat-header">Cars ChatBot</div>
-        <div class="chat-body" id="chatBody"></div>
-        <div class="chat-footer">
-            <input type="text" id="chatInput" placeholder="Въведи име на автомобил..." />
-            <button id="sendButton">Изпрати</button>
-        </div>
+  <div class="chat-container">
+    <div class="chat-header">Cars ChatBot</div>
+    <div class="chat-body" id="chatBody">🤖 Напиши името на кола (напр. `tesla_model_s`)</div>
+    <div class="chat-footer">
+      <input type="text" id="chatInput" placeholder="Въведи име на автомобил...">
+      <button onclick="sendMessage()">Изпрати</button>
     </div>
+  </div>
 
-    <!-- 🤖 JavaScript -->
-    <script>
-        document.getElementById('sendButton').addEventListener('click', sendMessage);
-        document.getElementById('chatInput').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') sendMessage();
-        });
+  <script>
+    const cars = {
+      'tesla_model_s': {
+        name: 'Tesla Model S',
+        description: 'An all-electric luxury sedan known for its high performance, long range, and cutting-edge technology.',
+        image: 'car1.png'
+      },
+      'ford_mustang': {
+        name: 'Ford Mustang',
+        description: 'An iconic American muscle car known for its aggressive design and powerful V8 engine.',
+        image: 'car2.png'
+      },
+      'toyota_corolla': {
+        name: 'Toyota Corolla',
+        description: 'A reliable and fuel-efficient compact car that is one of the best-selling vehicles in the world.',
+        image: 'car3.png'
+      },
+      'bmw_m3': {
+        name: 'BMW M3',
+        description: 'A high-performance sports sedan from BMW\'s M division, praised for its speed and handling.',
+        image: 'car4.png'
+      }
+      // Можеш да добавиш още тук
+    };
 
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const message = input.value.trim();
-            if (!message) return;
+    function sendMessage() {
+      const input = document.getElementById("chatInput");
+      const message = input.value.trim().toLowerCase();
+      const chatBody = document.getElementById("chatBody");
 
-            appendMessage('User', message);
+      if (!message) return;
 
-            fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message })
-            })
-            .then(response => response.json())
-            .then(data => {
-                appendMessage('ChatBot', data.response || 'Няма отговор.');
-                if (data.image) {
-                    showImage(data.image);
-                } else {
-                    clearImage();
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                appendMessage('ChatBot', 'Грешка при свързване със сървъра.');
-            });
+      if (cars[message]) {
+        const car = cars[message];
+        chatBody.innerHTML = `<strong>${car.name}:</strong> ${car.description}`;
+        document.getElementById("imageContainer").innerHTML = `<img src="images/${car.image}" alt="${car.name}">`;
+      } else {
+        chatBody.innerHTML = "❌ Не разпознавам тази кола.";
+        document.getElementById("imageContainer").innerHTML = "";
+      }
 
-            input.value = '';
-        }
-
-        function appendMessage(sender, text) {
-            const chatBody = document.getElementById('chatBody');
-            chatBody.innerHTML = `<div class="message"><strong>${sender}:</strong> ${text}</div>`;
-        }
-
-        function showImage(imageName) {
-            const imageContainer = document.getElementById('imageContainer');
-            imageContainer.innerHTML = `<img src="/images/${imageName}" alt="Car Image">`;
-        }
-
-        function clearImage() {
-            document.getElementById('imageContainer').innerHTML = '';
-        }
-    </script>
-
+      input.value = "";
+    }
+  </script>
 </body>
 </html>
